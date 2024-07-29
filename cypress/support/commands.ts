@@ -8,18 +8,30 @@
 // https://on.cypress.io/custom-commands
 // ***********************************************
 //
+
+import { checkIdHasText, clickDataTestIDByText } from "./helpers";
+
 //
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+export {}
+
+
+declare global {
+    namespace Cypress {
+      interface Chainable {
+      /**
+       * Select DOM element by data-test attribute
+       * Recommended approach for selecting elements - if you encounter issues with this use safeClickDataTest
+       * @example cy.dataTest('landing-header')
+       */
+      checkIdHasText: typeof checkIdHasText;
+
+      clickDataTestIDByText: typeof clickDataTestIDByText;
+      }
+    }
+}
+
+
+Cypress.Commands.add('checkIdHasText', checkIdHasText);
+
+Cypress.Commands.add('clickDataTestIDByText', clickDataTestIDByText);
+
