@@ -46,14 +46,13 @@ describe('From the BBC sport website', () => {
     cy.checkIdHasText('main-heading', 'Tottenham Hotspur Tables');
 
               cy.get('table > tbody > tr td:nth-child(2)').each((row, index) => {
-                cy.log(upcomingPremierLeagueFixtures.toString())
-                cy.log(row.text())
+
                 if (upcomingPremierLeagueFixtures.includes(row.text())) {
                   cy.get(`tbody > :nth-child(${index}) > :nth-child(1)`).then((position) => {
-                    cy.log(position.text())
-                    if (Number(position.text()) > 10){
-                      cy.log('this game is easy')
-                   }
+                    cy.log(`${row.text()}'s position is ${Number(position.text()) + 1}`)
+                    if (Number(position.text()) + 1 > 10){
+                      cy.log(`Fixture against ${row.text()} is easy`)
+                   } 
                   })
 
 
