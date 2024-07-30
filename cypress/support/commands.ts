@@ -26,6 +26,7 @@ declare global {
       checkIdHasText: typeof checkIdHasText;
 
       clickDataTestIDByText: typeof clickDataTestIDByText;
+
       }
     }
 }
@@ -34,4 +35,5 @@ declare global {
 Cypress.Commands.add('checkIdHasText', checkIdHasText);
 
 Cypress.Commands.add('clickDataTestIDByText', clickDataTestIDByText);
+
 

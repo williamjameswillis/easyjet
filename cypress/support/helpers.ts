@@ -13,3 +13,4 @@ export const checkIdHasText = (id: string, title: string): Cypress.Chainable => 
       .get('a').contains(text).click()
       return cy
     }
+
