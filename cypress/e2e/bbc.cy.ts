@@ -21,7 +21,7 @@ describe('From the BBC sport website', () => {
     cy.get('[data-testid="carousel-list-wrapper"]')
       .find('ul')
       .find('li')
-      // loop through all games in carousel
+      // loop through all upcoming games in list carousel
       .each(($listOfGames) => {
         cy.wrap($listOfGames)
           .find('div')
@@ -29,7 +29,7 @@ describe('From the BBC sport website', () => {
           .find('span')
           .find('span')
           .each(($TypeOfGame) => {
-            // Ignore pre-season friendlies
+            // and ignore pre-season friendlies in this list
             if ($TypeOfGame.text() === 'Premier League') {
               cy.log(`This game is ${$TypeOfGame.text()}`);
               cy.wrap($listOfGames)
@@ -61,15 +61,15 @@ describe('From the BBC sport website', () => {
             }
           });
       })
-      // then get all 20 teams in the table
+      // then get the names of all 20 teams in the league table
       .then(() => {
         cy.clickDataTestIDByText('navigation', 'Table');
         cy.checkIdHasText('main-heading', 'Tottenham Hotspur Tables');
 
         cy.get('table > tbody > tr td:nth-child(2)').each((row, index) => {
-          // and if it contains any of the upcoming fixtures
+          // and if it includes any of the upcoming fixtures
           if (upcomingPremierLeagueFixtures.includes(row.text())) {
-            // get that teams position in the league
+            // then get that teams position in the league
             cy.get(`tbody > :nth-child(${index}) > :nth-child(1)`).then(
               (position) => {
                 cy.log(
@@ -86,6 +86,19 @@ describe('From the BBC sport website', () => {
                       }
                       else cy.readFile(filePath).then((fixtures) => {
                         cy.writeFile(filePath, `${fixtures}Fixture against ${row.text()} is easy\n`)
+                      })
+                   })
+                }
+                else {
+                  cy.log(`Fixture against ${row.text()} is hard`);
+                  
+                  // write a file with the team in it if one doesnt exist or just append the team to the file if it does
+                  cy.task('readFileMaybe', filePath).then((textOrNull) => { 
+                    if (!textOrNull){
+                      cy.writeFile(filePath, `Fixture against ${row.text()} is hard\n`)
+                      }
+                      else cy.readFile(filePath).then((fixtures) => {
+                        cy.writeFile(filePath, `${fixtures}Fixture against ${row.text()} is hard\n`)
                       })
                    })
                 }
