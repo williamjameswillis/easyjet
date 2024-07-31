@@ -1,5 +1,3 @@
-const filePath ='cypress/downloads/fixtures.txt';
-
 describe('From the BBC sport website', () => {
   before(() => {
     cy.visit('sport');
@@ -75,33 +73,8 @@ describe('From the BBC sport website', () => {
                 cy.log(
                   `${row.text()}'s position is ${Number(position.text()) + 1}`
                 );
-                // and if the team is in the bottom half of the table
-                if (Number(position.text()) + 1 > 10) {
-                  cy.log(`Fixture against ${row.text()} is easy`);
-                  
-                  // write a file with the team in it if one doesnt exist or just append the team to the file if it does
-                  cy.task('readFileMaybe', filePath).then((textOrNull) => { 
-                    if (!textOrNull){
-                      cy.writeFile(filePath, `Fixture against ${row.text()} is easy\n`)
-                      }
-                      else cy.readFile(filePath).then((fixtures) => {
-                        cy.writeFile(filePath, `${fixtures}Fixture against ${row.text()} is easy\n`)
-                      })
-                   })
-                }
-                else {
-                  cy.log(`Fixture against ${row.text()} is hard`);
-                  
-                  // write a file with the team in it if one doesnt exist or just append the team to the file if it does
-                  cy.task('readFileMaybe', filePath).then((textOrNull) => { 
-                    if (!textOrNull){
-                      cy.writeFile(filePath, `Fixture against ${row.text()} is hard\n`)
-                      }
-                      else cy.readFile(filePath).then((fixtures) => {
-                        cy.writeFile(filePath, `${fixtures}Fixture against ${row.text()} is hard\n`)
-                      })
-                   })
-                }
+                // write a file detailing who spurs are playing and if they are easy or hard based on league position
+                cy.checkTablePositionAndWriteFile(position, row)
               }
             );
           }

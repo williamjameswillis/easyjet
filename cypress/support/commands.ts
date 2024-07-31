@@ -10,7 +10,7 @@
 // ***********************************************
 //
 
-import { checkIdHasText, clickDataTestIDByText } from "./helpers";
+import { checkIdHasText, clickDataTestIDByText, checkTablePositionAndWriteFile } from "./helpers";
 
 //
 export {}
@@ -28,13 +28,13 @@ declare global {
 
       clickDataTestIDByText: typeof clickDataTestIDByText;
 
+      checkTablePositionAndWriteFile: typeof checkTablePositionAndWriteFile;
       }
     }
 }
-
 
 Cypress.Commands.add('checkIdHasText', checkIdHasText);
 
 Cypress.Commands.add('clickDataTestIDByText', clickDataTestIDByText);
 
-
+Cypress.Commands.add('checkTablePositionAndWriteFile', checkTablePositionAndWriteFile)
