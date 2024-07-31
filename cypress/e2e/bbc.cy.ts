@@ -1,7 +1,9 @@
+const filePath ='cypress/downloads/fixtures.txt';
+
 describe('From the BBC sport website', () => {
   before(() => {
     cy.visit('sport');
-    cy.contains('Yes, I agree').click(); // click the cookies consent
+    cy.contains('Yes, I agree').click();
   });
   it('identify Tottenham Hotspurs next 5 fixtures and flag the easy ones', () => {
     let upcomingPremierLeagueFixtures: string = '';
@@ -19,6 +21,7 @@ describe('From the BBC sport website', () => {
     cy.get('[data-testid="carousel-list-wrapper"]')
       .find('ul')
       .find('li')
+      // loop through all games in carousel
       .each(($listOfGames) => {
         cy.wrap($listOfGames)
           .find('div')
@@ -26,6 +29,7 @@ describe('From the BBC sport website', () => {
           .find('span')
           .find('span')
           .each(($TypeOfGame) => {
+            // Ignore pre-season friendlies
             if ($TypeOfGame.text() === 'Premier League') {
               cy.log(`This game is ${$TypeOfGame.text()}`);
               cy.wrap($listOfGames)
@@ -51,17 +55,14 @@ describe('From the BBC sport website', () => {
                     .replace(stripStrings[3], '')
                     .replace(stripStrings[4], '');
 
-                  cy.log(fixtureWithSpursStrippedOut);
                   upcomingPremierLeagueFixtures =
                     upcomingPremierLeagueFixtures + fixtureWithSpursStrippedOut;
                 });
-              cy.log(upcomingPremierLeagueFixtures.toString());
             }
           });
       })
       // then get a list of all 20 teams in the table and their positions
       .then(() => {
-        cy.log(upcomingPremierLeagueFixtures.toString());
 
         cy.clickDataTestIDByText('navigation', 'Table');
         cy.checkIdHasText('main-heading', 'Tottenham Hotspur Tables');
@@ -73,8 +74,18 @@ describe('From the BBC sport website', () => {
                 cy.log(
                   `${row.text()}'s position is ${Number(position.text()) + 1}`
                 );
+                // Are the teams in the bottom half of the table
                 if (Number(position.text()) + 1 > 10) {
                   cy.log(`Fixture against ${row.text()} is easy`);
+                  
+                  cy.task('readFileMaybe', filePath).then((textOrNull) => { 
+                    if (!textOrNull){
+                      cy.writeFile(filePath, `Fixture against ${row.text()} is easy\n`)
+                      }
+                      else cy.readFile(filePath).then((fixtures) => {
+                        cy.writeFile(filePath, `${fixtures}Fixture against ${row.text()} is easy\n`)
+                      })
+                   })
                 }
               }
             );
