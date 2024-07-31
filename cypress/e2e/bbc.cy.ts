@@ -61,23 +61,25 @@ describe('From the BBC sport website', () => {
             }
           });
       })
-      // then get a list of all 20 teams in the table and their positions
+      // then get all 20 teams in the table
       .then(() => {
-
         cy.clickDataTestIDByText('navigation', 'Table');
         cy.checkIdHasText('main-heading', 'Tottenham Hotspur Tables');
 
         cy.get('table > tbody > tr td:nth-child(2)').each((row, index) => {
+          // and if it contains any of the upcoming fixtures
           if (upcomingPremierLeagueFixtures.includes(row.text())) {
+            // get that teams position in the league
             cy.get(`tbody > :nth-child(${index}) > :nth-child(1)`).then(
               (position) => {
                 cy.log(
                   `${row.text()}'s position is ${Number(position.text()) + 1}`
                 );
-                // Are the teams in the bottom half of the table
+                // and if the team is in the bottom half of the table
                 if (Number(position.text()) + 1 > 10) {
                   cy.log(`Fixture against ${row.text()} is easy`);
                   
+                  // write a file with the team in it if one doesnt exist or just append the team to the file if it does
                   cy.task('readFileMaybe', filePath).then((textOrNull) => { 
                     if (!textOrNull){
                       cy.writeFile(filePath, `Fixture against ${row.text()} is easy\n`)
