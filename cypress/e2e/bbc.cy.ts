@@ -1,4 +1,5 @@
 const teamToAnalyse = 'Tottenham Hotspur';
+const numberOfGamesToAnalyse = 5;
 
 describe('From the BBC sport website', () => {
   before(() => {
@@ -6,7 +7,7 @@ describe('From the BBC sport website', () => {
     cy.contains('Yes, I agree').click();
   });
   it(`identify the next 5 fixtures for ${teamToAnalyse} and flag the easy and hard ones`, () => {
-    let upcomingPremierLeagueFixtures: string = '';
+    const upcomingPremierLeagueFixtures: string[] = [''];
     let fixtureWithSpursStrippedOut: string = '';
     // first find out Tottenham Hotspurs next 5 fixtures
     cy.clickDataTestIDByText('navigation', 'Football');
@@ -19,22 +20,17 @@ describe('From the BBC sport website', () => {
     cy.checkIdHasText('main-heading', teamToAnalyse);
 
     cy.get('[data-testid="carousel-list-wrapper"]')
-      .find('ul')
-      .find('li')
+      .find('ul > li')
       // loop through all upcoming games in list carousel
       .each(($listOfGames) => {
         cy.wrap($listOfGames)
-          .find('div')
-          .find('div')
-          .find('span')
-          .find('span')
+          .find('div > div > span > span')
           .each(($TypeOfGame) => {
             // and ignore pre-season friendlies in this list
             if ($TypeOfGame.text() === 'Premier League') {
               cy.log(`This game is ${$TypeOfGame.text()}`);
               cy.wrap($listOfGames)
-                .find('div')
-                .find('div')
+                .find('div > div')
                 .eq(1)
                 .find('div')
                 .first()
@@ -55,20 +51,19 @@ describe('From the BBC sport website', () => {
                     .replace(stripStrings[3], '')
                     .replace(stripStrings[4], '');
 
-                  upcomingPremierLeagueFixtures =
-                    upcomingPremierLeagueFixtures + fixtureWithSpursStrippedOut;
+                  upcomingPremierLeagueFixtures.push(fixtureWithSpursStrippedOut);
                 });
             }
           });
       })
       // then get the names of all 20 teams in the league table
       .then(() => {
+        cy.log(upcomingPremierLeagueFixtures.toString())
         cy.clickDataTestIDByText('navigation', 'Table');
         cy.checkIdHasText('main-heading', `${teamToAnalyse} Tables`);
-
         cy.get('table > tbody > tr td:nth-child(2)').each((row, index) => {
           // and if it includes any of the upcoming fixtures
-          if (upcomingPremierLeagueFixtures.includes(row.text())) {
+          if (upcomingPremierLeagueFixtures.toString().includes(row.text())) {
             // then get that teams position in the league
             cy.get(`tbody > :nth-child(${index}) > :nth-child(1)`).then(
               (position) => {
