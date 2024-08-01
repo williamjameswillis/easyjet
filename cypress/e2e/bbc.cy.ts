@@ -1,20 +1,22 @@
+const teamToAnalyse = 'Tottenham Hotspur';
+
 describe('From the BBC sport website', () => {
   before(() => {
     cy.visit('sport');
     cy.contains('Yes, I agree').click();
   });
-  it('identify Tottenham Hotspurs next 5 fixtures and flag the easy ones', () => {
+  it(`identify the next 5 fixtures for ${teamToAnalyse} and flag the easy and hard ones`, () => {
     let upcomingPremierLeagueFixtures: string = '';
     let fixtureWithSpursStrippedOut: string = '';
     // first find out Tottenham Hotspurs next 5 fixtures
     cy.clickDataTestIDByText('navigation', 'Football');
     cy.checkIdHasText('main-heading', 'Football');
 
-    cy.clickDataTestIDByText('navigation', 'Tables');
-    cy.checkIdHasText('main-heading', 'Premier League Table');
+    cy.clickDataTestIDByText('navigation', 'All Teams');
+    cy.checkIdHasText('main-heading', 'All Teams');
 
-    cy.contains('Tottenham Hotspur').click();
-    cy.checkIdHasText('main-heading', 'Tottenham Hotspur');
+    cy.contains(teamToAnalyse).click();
+    cy.checkIdHasText('main-heading', teamToAnalyse);
 
     cy.get('[data-testid="carousel-list-wrapper"]')
       .find('ul')
@@ -42,7 +44,7 @@ describe('From the BBC sport website', () => {
                     ' Tottenham',
                     'Tottenham',
                     'Hotspur',
-                    'Tottenham Hotspur',
+                    teamToAnalyse,
                     'TottenhamTottenham',
                   ];
                   fixtureWithSpursStrippedOut = $MatchParticipant
@@ -62,7 +64,7 @@ describe('From the BBC sport website', () => {
       // then get the names of all 20 teams in the league table
       .then(() => {
         cy.clickDataTestIDByText('navigation', 'Table');
-        cy.checkIdHasText('main-heading', 'Tottenham Hotspur Tables');
+        cy.checkIdHasText('main-heading', `${teamToAnalyse} Tables`);
 
         cy.get('table > tbody > tr td:nth-child(2)').each((row, index) => {
           // and if it includes any of the upcoming fixtures
@@ -74,7 +76,7 @@ describe('From the BBC sport website', () => {
                   `${row.text()}'s position is ${Number(position.text()) + 1}`
                 );
                 // write a file detailing who spurs are playing and if they are easy or hard based on league position
-                cy.checkTablePositionAndWriteFile(position, row)
+                cy.checkTablePositionAndWriteFile(position, row);
               }
             );
           }
