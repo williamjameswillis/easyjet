@@ -22,7 +22,7 @@ const filePath = 'cypress/downloads/fixtures.txt';
 
 export const checkTableRankAndWriteFile = (
   fixture: string,
-  rank: JQuery<HTMLElement>,
+  rank: JQuery<HTMLElement>
 ) => {
   // if its in the bottom half of the table then add it to the file as easy
   if (Number(rank.text()) > 10) {

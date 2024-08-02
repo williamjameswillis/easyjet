@@ -1,5 +1,5 @@
-import { defineConfig } from 'cypress'
-import * as fs from 'fs'
+import { defineConfig } from 'cypress';
+import * as fs from 'fs';
 
 export default defineConfig({
   e2e: {
@@ -9,14 +9,12 @@ export default defineConfig({
       on('task', {
         readFileMaybe(filename) {
           if (fs.existsSync(filename)) {
-            return fs.readFileSync(filename, 'utf8')
+            return fs.readFileSync(filename, 'utf8');
           }
 
-          return null
+          return null;
         },
-      })
+      });
     },
   },
-})
-
-
+});

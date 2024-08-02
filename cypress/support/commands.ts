@@ -10,23 +10,26 @@
 // ***********************************************
 //
 
-import { checkIdHasText, clickDataTestIDByText, checkTableRankAndWriteFile } from "./helpers";
-
+import {
+  checkIdHasText,
+  clickDataTestIDByText,
+  checkTableRankAndWriteFile,
+} from './helpers';
 
 declare global {
-    namespace Cypress {
-      interface Chainable {
+  namespace Cypress {
+    interface Chainable {
       checkIdHasText: typeof checkIdHasText;
 
       clickDataTestIDByText: typeof clickDataTestIDByText;
 
       checkTableRankAndWriteFile: typeof checkTableRankAndWriteFile;
-      }
     }
+  }
 }
 
 Cypress.Commands.add('checkIdHasText', checkIdHasText);
 
 Cypress.Commands.add('clickDataTestIDByText', clickDataTestIDByText);
 
-Cypress.Commands.add('checkTableRankAndWriteFile', checkTableRankAndWriteFile)
+Cypress.Commands.add('checkTableRankAndWriteFile', checkTableRankAndWriteFile);

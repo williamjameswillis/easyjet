@@ -36,8 +36,10 @@ describe('From the BBC sport website', () => {
                 .first()
                 .find('div > div > div:nth-child(2)')
                 .then((Player) => {
-                  fixtureWithSpursStrippedOut = Player.text()
-                    .replace('Tottenham', '')
+                  fixtureWithSpursStrippedOut = Player.text().replace(
+                    'Tottenham',
+                    ''
+                  );
 
                   upcomingPremierLeagueFixtures.push(
                     fixtureWithSpursStrippedOut
@@ -50,21 +52,22 @@ describe('From the BBC sport website', () => {
         cy.log(upcomingPremierLeagueFixtures.toString());
         cy.clickDataTestIDByText('navigation', 'Table');
         cy.checkIdHasText('main-heading', `${teamToAnalyse} Tables`);
-        upcomingPremierLeagueFixtures.forEach((fixture, index)=> {
-          if (!fixture) return // this is to return out of the loop when in the array where Tottenham was stripped out
-          if (index > numberOfGamesToAnalyse) return // this is to return out once we have analysed more than the required number of games
-        cy.get(`[data-900="${fixture}"]`).then(($row) => {
+        upcomingPremierLeagueFixtures.forEach((fixture, index) => {
+          if (!fixture) return; // this is to return out of the loop when in the array where Tottenham was stripped out
+          if (index > numberOfGamesToAnalyse) return; // this is to return out once we have analysed more than the required number of games
+          cy.get(`[data-900="${fixture}"]`).then(($row) => {
             // then get that teams rank in the league
-            cy.wrap($row).parents('[class*="-TableRow"]').find('td').first().then(($rank) => {
-                cy.log(
-                  `${fixture}'s rank is ${Number($rank.text())}`
-                );
+            cy.wrap($row)
+              .parents('[class*="-TableRow"]')
+              .find('td')
+              .first()
+              .then(($rank) => {
+                cy.log(`${fixture}'s rank is ${Number($rank.text())}`);
                 // write a file detailing who Tottenham are playing and if they are easy or hard based on league rank
                 cy.checkTableRankAndWriteFile(fixture, $rank);
-              }
-            );
+              });
+          });
         });
-      })
       });
   });
 });
