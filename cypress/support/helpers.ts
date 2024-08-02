@@ -20,12 +20,12 @@ export const clickDataTestIDByText = (
 
 const filePath = 'cypress/downloads/fixtures.txt';
 
-export const checkTablePositionAndWriteFile = (
-  position: JQuery<HTMLElement>,
-  fixture: string
+export const checkTableRankAndWriteFile = (
+  fixture: string,
+  rank: JQuery<HTMLElement>,
 ) => {
   // if its in the bottom half of the table then add it to the file as easy
-  if (Number(position.text()) > 10) {
+  if (Number(rank.text()) > 10) {
     cy.log(`Fixture against ${fixture} is easy`);
 
     // write a file with the team in it if one doesnt exist or just append the team to the file if it does

@@ -21,12 +21,12 @@ describe('From the BBC sport website', () => {
 
     cy.get('[data-testid="carousel-list-wrapper"]')
       .find('ul > li')
-      // loop through all upcoming games in list carousel
+      // loop through all games in list carousel
       .each(($listOfGames) => {
         cy.wrap($listOfGames)
           .find('div > div > span > span')
           .each(($TypeOfGame) => {
-            // ignore the pre-season friendlies and Tottenham and add them to a array of strings
+            // ignore the pre-season friendlies and add them to a array of strings then strip Tottenham out
             if ($TypeOfGame.text() === 'Premier League') {
               cy.log(`This game is ${$TypeOfGame.text()}`);
               cy.wrap($listOfGames)
@@ -36,10 +36,8 @@ describe('From the BBC sport website', () => {
                 .first()
                 .find('div > div > div:nth-child(2)')
                 .then((Player) => {
-                  fixtureWithSpursStrippedOut = Player.text().replace(
-                    'Tottenham',
-                    ''
-                  );
+                  fixtureWithSpursStrippedOut = Player.text()
+                    .replace('Tottenham', '')
 
                   upcomingPremierLeagueFixtures.push(
                     fixtureWithSpursStrippedOut
@@ -52,22 +50,21 @@ describe('From the BBC sport website', () => {
         cy.log(upcomingPremierLeagueFixtures.toString());
         cy.clickDataTestIDByText('navigation', 'Table');
         cy.checkIdHasText('main-heading', `${teamToAnalyse} Tables`);
-        upcomingPremierLeagueFixtures.forEach((fixture, index) => {
-          if (!fixture) return;
-          if (index > numberOfGamesToAnalyse) return;
-          cy.get(`[data-900="${fixture}"]`).then((row) => {
-            // then get that teams position in the league
-            cy.wrap(row)
-              .parents('[class*="-TableRow"]')
-              .find('td')
-              .first()
-              .then((rank) => {
-                cy.log(`${fixture}'s position is ${Number(rank.text())}`);
-                // write a file detailing who spurs are playing and if they are easy or hard based on league position
-                cy.checkTablePositionAndWriteFile(rank, fixture);
-              });
-          });
+        upcomingPremierLeagueFixtures.forEach((fixture, index)=> {
+          if (!fixture) return // this is to return out of the loop when in the array where Tottenham was stripped out
+          if (index > numberOfGamesToAnalyse) return // this is to return out once we have analysed more than the required number of games
+        cy.get(`[data-900="${fixture}"]`).then((row) => {
+            // then get that teams rank in the league
+            cy.wrap(row).parents('[class*="-TableRow"]').find('td').first().then((rank) => {
+                cy.log(
+                  `${fixture}'s rank is ${Number(rank.text())}`
+                );
+                // write a file detailing who Tottenham are playing and if they are easy or hard based on league rank
+                cy.checkTableRankAndWriteFile(fixture, rank);
+              }
+            );
         });
+      })
       });
   });
 });
