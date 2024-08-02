@@ -22,38 +22,38 @@ const filePath = 'cypress/downloads/fixtures.txt';
 
 export const checkTablePositionAndWriteFile = (
   position: JQuery<HTMLElement>,
-  row: JQuery<HTMLElement>
+  fixture: string
 ) => {
   // if its in the bottom half of the table then add it to the file as easy
   if (Number(position.text()) + 1 > 10) {
-    cy.log(`Fixture against ${row.text()} is easy`);
+    cy.log(`Fixture against ${fixture} is easy`);
 
     // write a file with the team in it if one doesnt exist or just append the team to the file if it does
     cy.task('readFileMaybe', filePath).then((textOrNull) => {
       if (!textOrNull) {
-        cy.writeFile(filePath, `Fixture against ${row.text()} is easy\n`);
+        cy.writeFile(filePath, `Fixture against ${fixture} is easy\n`);
       } else
         cy.readFile(filePath).then((fixtures) => {
           cy.writeFile(
             filePath,
-            `${fixtures}Fixture against ${row.text()} is easy\n`
+            `${fixtures}Fixture against ${fixture} is easy\n`
           );
         });
     });
   }
   // but if its in the top half of the table then add it to the file as hard
   else {
-    cy.log(`Fixture against ${row.text()} is hard`);
+    cy.log(`Fixture against ${fixture} is hard`);
 
     // write a file with the team in it if one doesnt exist or just append the team to the file if it does
     cy.task('readFileMaybe', filePath).then((textOrNull) => {
       if (!textOrNull) {
-        cy.writeFile(filePath, `Fixture against ${row.text()} is hard\n`);
+        cy.writeFile(filePath, `Fixture against ${fixture} is hard\n`);
       } else
         cy.readFile(filePath).then((fixtures) => {
           cy.writeFile(
             filePath,
-            `${fixtures}Fixture against ${row.text()} is hard\n`
+            `${fixtures}Fixture against ${fixture} is hard\n`
           );
         });
     });
