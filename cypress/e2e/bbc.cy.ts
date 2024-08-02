@@ -48,6 +48,7 @@ describe('From the BBC sport website', () => {
             }
           });
       })
+      // then loop though 5 of these upcoming fixtures and find that teams league rank
       .then(() => {
         cy.log(upcomingPremierLeagueFixtures.toString());
         cy.clickDataTestIDByText('navigation', 'Table');
@@ -68,6 +69,12 @@ describe('From the BBC sport website', () => {
               });
           });
         });
+        // now assert we end up with a file with the correct number of fixtures analysed
+        cy.readFile(`${Cypress.config('downloadsFolder')}/fixtures.txt`)
+          .should('have.length.gt', 0)
+          .then((fileContents: string) => {
+            cy.validateFileLength(fileContents, numberOfGamesToAnalyse + 1); // +1 is for the trailing empty line
+          });
       });
   });
 });

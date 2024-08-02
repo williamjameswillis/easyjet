@@ -18,8 +18,6 @@ export const clickDataTestIDByText = (
   return cy;
 };
 
-const filePath = 'cypress/downloads/fixtures.txt';
-
 export const checkTableRankAndWriteFile = (
   fixture: string,
   rank: JQuery<HTMLElement>
@@ -29,16 +27,24 @@ export const checkTableRankAndWriteFile = (
     cy.log(`Fixture against ${fixture} is easy`);
 
     // write a file with the team in it if one doesnt exist or just append the team to the file if it does
-    cy.task('readFileMaybe', filePath).then((textOrNull) => {
+    cy.task(
+      'readFileMaybe',
+      `${Cypress.config('downloadsFolder')}/fixtures.txt`
+    ).then((textOrNull) => {
       if (!textOrNull) {
-        cy.writeFile(filePath, `Fixture against ${fixture} is easy\n`);
+        cy.writeFile(
+          `${Cypress.config('downloadsFolder')}/fixtures.txt`,
+          `Fixture against ${fixture} is easy\n`
+        );
       } else
-        cy.readFile(filePath).then((fixtures) => {
-          cy.writeFile(
-            filePath,
-            `${fixtures}Fixture against ${fixture} is easy\n`
-          );
-        });
+        cy.readFile(`${Cypress.config('downloadsFolder')}/fixtures.txt`).then(
+          (fixtures) => {
+            cy.writeFile(
+              `${Cypress.config('downloadsFolder')}/fixtures.txt`,
+              `${fixtures}Fixture against ${fixture} is easy\n`
+            );
+          }
+        );
     });
   }
   // but if its in the top half of the table then add it to the file as hard
@@ -46,16 +52,33 @@ export const checkTableRankAndWriteFile = (
     cy.log(`Fixture against ${fixture} is hard`);
 
     // write a file with the team in it if one doesnt exist or just append the team to the file if it does
-    cy.task('readFileMaybe', filePath).then((textOrNull) => {
+    cy.task(
+      'readFileMaybe',
+      `${Cypress.config('downloadsFolder')}/fixtures.txt`
+    ).then((textOrNull) => {
       if (!textOrNull) {
-        cy.writeFile(filePath, `Fixture against ${fixture} is hard\n`);
+        cy.writeFile(
+          `${Cypress.config('downloadsFolder')}/fixtures.txt`,
+          `Fixture against ${fixture} is hard\n`
+        );
       } else
-        cy.readFile(filePath).then((fixtures) => {
-          cy.writeFile(
-            filePath,
-            `${fixtures}Fixture against ${fixture} is hard\n`
-          );
-        });
+        cy.readFile(`${Cypress.config('downloadsFolder')}/fixtures.txt`).then(
+          (fixtures) => {
+            cy.writeFile(
+              `${Cypress.config('downloadsFolder')}/fixtures.txt`,
+              `${fixtures}Fixture against ${fixture} is hard\n`
+            );
+          }
+        );
     });
   }
+};
+
+export const validateFileLength = (
+  fileContents: string,
+  expectedLength: number
+) => {
+  const lines = fileContents.split('\n').length;
+  expect(lines).to.equal(expectedLength);
+  return cy;
 };

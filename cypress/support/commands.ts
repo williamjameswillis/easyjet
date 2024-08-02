@@ -14,6 +14,7 @@ import {
   checkIdHasText,
   clickDataTestIDByText,
   checkTableRankAndWriteFile,
+  validateFileLength,
 } from './helpers';
 
 declare global {
@@ -24,6 +25,8 @@ declare global {
       clickDataTestIDByText: typeof clickDataTestIDByText;
 
       checkTableRankAndWriteFile: typeof checkTableRankAndWriteFile;
+
+      validateFileLength: typeof validateFileLength;
     }
   }
 }
@@ -33,3 +36,5 @@ Cypress.Commands.add('checkIdHasText', checkIdHasText);
 Cypress.Commands.add('clickDataTestIDByText', clickDataTestIDByText);
 
 Cypress.Commands.add('checkTableRankAndWriteFile', checkTableRankAndWriteFile);
+
+Cypress.Commands.add('validateFileLength', validateFileLength);
