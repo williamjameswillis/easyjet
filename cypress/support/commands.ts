@@ -12,18 +12,10 @@
 
 import { checkIdHasText, clickDataTestIDByText, checkTablePositionAndWriteFile } from "./helpers";
 
-//
-export {}
-
 
 declare global {
     namespace Cypress {
       interface Chainable {
-      /**
-       * Select DOM element by data-test attribute
-       * Recommended approach for selecting elements - if you encounter issues with this use safeClickDataTest
-       * @example cy.dataTest('landing-header')
-       */
       checkIdHasText: typeof checkIdHasText;
 
       clickDataTestIDByText: typeof clickDataTestIDByText;
