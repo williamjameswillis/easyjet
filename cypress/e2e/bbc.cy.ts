@@ -26,7 +26,7 @@ describe('From the BBC sport website', () => {
               .then(($rank) => {
                 cy.log(`${fixture}'s rank is ${Number($rank.text())}`);
                 // write a file detailing who Tottenham are playing and if they are easy or hard based on league rank
-                cy.checkTableRankAndWriteFile(fixture, $rank);
+                cy.writeFixtureAnalysisFile(fixture, $rank);
               });
           });
         });

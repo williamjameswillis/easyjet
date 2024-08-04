@@ -18,7 +18,7 @@ export const clickDataTestIDByText = (
   return cy;
 };
 
-export const checkTableRankAndWriteFile = (
+export const writeFixtureAnalysisFile = (
   fixture: string,
   rank: JQuery<HTMLElement>
 ) => {
