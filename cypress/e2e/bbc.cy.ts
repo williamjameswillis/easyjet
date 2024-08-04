@@ -8,16 +8,7 @@ describe('From the BBC sport website', () => {
   });
   it(`identify the next 5 fixtures for ${teamToAnalyse} and flag the easy and hard ones`, () => {
     // first find out Tottenham Hotspurs upcoming fixtures
-    cy.clickDataTestIDByText('navigation', 'Football');
-    cy.checkIdHasText('main-heading', 'Football');
-
-    cy.clickDataTestIDByText('navigation', 'All Teams');
-    cy.checkIdHasText('main-heading', 'All Teams');
-
-    cy.contains(teamToAnalyse).click();
-    cy.checkIdHasText('main-heading', teamToAnalyse);
-
-    cy.getUpcomingFixtures()
+    cy.getUpcomingFixtures(teamToAnalyse)
       // then go to the table and loop though 5 of these upcoming fixtures and find that teams league rank
       .then((upcomingPremierLeagueFixtures) => {
         cy.clickDataTestIDByText('navigation', 'Table');
@@ -39,7 +30,7 @@ describe('From the BBC sport website', () => {
               });
           });
         });
-        // now assert we end up with a file with the correct number of fixtures analysed
+        // now assert we end up with a file with the specified number of fixtures analysed
         cy.readFile(`${Cypress.config('downloadsFolder')}/fixtures.txt`)
           .should('have.length.gt', 0)
           .then((fileContents: string) => {

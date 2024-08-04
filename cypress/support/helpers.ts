@@ -86,7 +86,15 @@ export const validateFileLength = (
 const upcomingPremierLeagueFixtures: string[] = [''];
 let fixtureWithSpursStrippedOut: string = '';
 
-export const getUpcomingFixtures = (): Cypress.Chainable => {
+export const getUpcomingFixtures = (teamToAnalyse: string): Cypress.Chainable => {
+  cy.clickDataTestIDByText('navigation', 'Football');
+  cy.checkIdHasText('main-heading', 'Football');
+
+  cy.clickDataTestIDByText('navigation', 'All Teams');
+  cy.checkIdHasText('main-heading', 'All Teams');
+
+  cy.contains(teamToAnalyse).click();
+  cy.checkIdHasText('main-heading', teamToAnalyse);
   cy.get('[data-testid="carousel-list-wrapper"]')
     .find('ul > li')
     // loop through all games in list carousel
