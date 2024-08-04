@@ -27,8 +27,6 @@ Note that previous runs of the script will have left a fixtures.txt file in cypr
 
 If I was working at the BBC i would be working with the developers of the BBC Sport website and adding far more data-test selectors to make the script i have written more resistant to changes. Some of the selectors i have used are brittle.
 
-Package up the code getting the upcoming fixtures from the carousel into a method that returns the string array of fixtures.
-
 Build ci/cd pipelines that executes this test automatically in a docker job on push up.
 
 Use a Page Object Model with inheritance to define each page we need to deal with on the BBC Sport page, this would improve readability and maintainability.

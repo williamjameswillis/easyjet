@@ -15,6 +15,7 @@ import {
   clickDataTestIDByText,
   checkTableRankAndWriteFile,
   validateFileLength,
+  getUpcomingFixtures,
 } from './helpers';
 
 declare global {
@@ -27,6 +28,8 @@ declare global {
       checkTableRankAndWriteFile: typeof checkTableRankAndWriteFile;
 
       validateFileLength: typeof validateFileLength;
+
+      getUpcomingFixtures: typeof getUpcomingFixtures;
     }
   }
 }
@@ -38,3 +41,5 @@ Cypress.Commands.add('clickDataTestIDByText', clickDataTestIDByText);
 Cypress.Commands.add('checkTableRankAndWriteFile', checkTableRankAndWriteFile);
 
 Cypress.Commands.add('validateFileLength', validateFileLength);
+
+Cypress.Commands.add('getUpcomingFixtures', getUpcomingFixtures)

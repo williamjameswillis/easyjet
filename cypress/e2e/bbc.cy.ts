@@ -7,8 +7,6 @@ describe('From the BBC sport website', () => {
     cy.contains('Yes, I agree').click();
   });
   it(`identify the next 5 fixtures for ${teamToAnalyse} and flag the easy and hard ones`, () => {
-    const upcomingPremierLeagueFixtures: string[] = [''];
-    let fixtureWithSpursStrippedOut: string = '';
     // first find out Tottenham Hotspurs upcoming fixtures
     cy.clickDataTestIDByText('navigation', 'Football');
     cy.checkIdHasText('main-heading', 'Football');
@@ -19,41 +17,13 @@ describe('From the BBC sport website', () => {
     cy.contains(teamToAnalyse).click();
     cy.checkIdHasText('main-heading', teamToAnalyse);
 
-    cy.get('[data-testid="carousel-list-wrapper"]')
-      .find('ul > li')
-      // loop through all games in list carousel
-      .each(($listOfGames) => {
-        cy.wrap($listOfGames)
-          .find('div > div > span > span')
-          .each(($TypeOfGame) => {
-            // ignore the pre-season friendlies and add them to a array of strings then strip Tottenham out
-            if ($TypeOfGame.text() === 'Premier League') {
-              cy.log(`This game is ${$TypeOfGame.text()}`);
-              cy.wrap($listOfGames)
-                .find('div > div')
-                .eq(1)
-                .find('div')
-                .first()
-                .find('div > div > div:nth-child(2)')
-                .then((Player) => {
-                  fixtureWithSpursStrippedOut = Player.text().replace(
-                    'Tottenham',
-                    ''
-                  );
-
-                  upcomingPremierLeagueFixtures.push(
-                    fixtureWithSpursStrippedOut
-                  );
-                });
-            }
-          });
-      })
-      // then loop though 5 of these upcoming fixtures and find that teams league rank
-      .then(() => {
-        cy.log(upcomingPremierLeagueFixtures.toString());
+    cy.getUpcomingFixtures()
+      // then go to the table and loop though 5 of these upcoming fixtures and find that teams league rank
+      .then((upcomingPremierLeagueFixtures) => {
         cy.clickDataTestIDByText('navigation', 'Table');
         cy.checkIdHasText('main-heading', `${teamToAnalyse} Tables`);
-        upcomingPremierLeagueFixtures.forEach((fixture, index) => {
+
+        upcomingPremierLeagueFixtures.forEach((fixture: string, index: number) => {
           if (!fixture) return; // this is to return out of the loop when in the array where Tottenham was stripped out
           if (index > numberOfGamesToAnalyse) return; // this is to return out once we have analysed more than the required number of games
           cy.get(`[data-900="${fixture}"]`).then(($row) => {
