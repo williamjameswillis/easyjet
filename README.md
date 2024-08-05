@@ -1,10 +1,10 @@
-# easyjet technical interview
+# easyJet Technical Interview
 
-## requirement
+## Requirement
 
 Create an automation test against the https://www.bbc.co.uk/sport  website that determines what the next 5 premier league fixtures are for Tottenham Hotspur, and in the results highlight any games that are easy based on the team being in the bottom half of the premier league table.
 
-## approach and tooling
+## Approach and Tooling
 
 Since the requirement specified a test I decided to use Cypress test tool as I have recent experience with this test tool. 
 
