@@ -1,5 +1,5 @@
 const teamToAnalyse = 'Tottenham Hotspur';
-const numberOfGamesToAnalyse = 5;
+const numberOfGamesToAnalyse = 5; // up to 10
 
 describe('From the BBC sport website', () => {
   before(() => {

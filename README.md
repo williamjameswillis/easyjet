@@ -25,7 +25,13 @@ Note that previous runs of the script will have left a fixtures.txt file in cypr
 
 ## Improvements to make 
 
-If I was working at the BBC i would be working with the developers of the BBC Sport website and adding far more data-test selectors to make the script i have written more resistant to changes. Some of the selectors i have used are brittle.
+If I was working at the BBC i would be working with the developers of the BBC Sport website and adding far more data-test selectors to make the script i have written more resistant to changes. Some of the selectors i have used are brittle - this is also poor from an accessibility angle. If i was to add an accessibility library like axe-core this would likely fail a lot of assertions,
+
+Write out more data into a csv file and then send it somewhere to allow further analysis.
+
+Currently its hardcoded for Premier League teams only but this could also be a parameter passed in to allow analysis of any team.
+
+If requirement was for analysis of more than one team, ensure it can be ran concurrently up to an agreed level (then further for NFT).
 
 Build ci/cd pipelines that executes this test automatically in a docker job on push up.
 
